@@ -5,7 +5,7 @@ import Button from "react-bootstrap/Button";
 import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import { login } from "../../store/user/actions";
-import { selectToken } from "../../store/user/selectors";
+import { selectToken, selectUser } from "../../store/user/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 import { Col } from "react-bootstrap";
@@ -16,13 +16,18 @@ export default function SignUp() {
   const [role, setRole] = useState("patient");
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
+  const loggedInUser = useSelector(selectUser);
   const history = useHistory();
 
   useEffect(() => {
     if (token !== null) {
-      history.push("/");
+      if (loggedInUser.therapistId) {
+        history.push("/wait-for-session");
+      } else {
+        history.push("/create-session");
+      }
     }
-  }, [token, history]);
+  }, [token, history, loggedInUser.therapistId]);
 
   function submitForm(event) {
     console.log("hi");
