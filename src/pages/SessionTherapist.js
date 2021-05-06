@@ -1,13 +1,11 @@
-import React /*, { useState, useEffect }*/ from "react";
+import React from "react";
 
 import { Jumbotron } from "react-bootstrap";
-import { /*useSelector,*/ useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-// import { selectUser } from "../store/user/selectors";
-// import { selectMyPatients } from "../store/patients/selectors";
+import P5Wrapper from "react-p5-wrapper";
 
-// import { fetchMyPatients } from "../store/patients/actions";
 import { endSession } from "../store/session/actions";
 
 export default function SessionTherapist() {
@@ -15,19 +13,22 @@ export default function SessionTherapist() {
 
   const history = useHistory();
 
-  //   const loggedInUser = useSelector(selectUser);
-  //   const myPatients = useSelector(selectMyPatients);
-  //   const [selectedPatient, setSelectedPatient] = useState(myPatients[0]);
-
-  //   console.log("myPatients", myPatients);
-
-  //   useEffect(() => {
-  //     dispatch(fetchMyPatients());
-  //   }, [dispatch]);
-
   function endSessionHandler() {
     dispatch(endSession());
     history.push("/create-session");
+  }
+
+  function sketch(p) {
+    p.setup = function () {
+      p.createCanvas(600, 600);
+      p.background(200);
+    };
+
+    p.mouseDragged = function () {
+      p.noStroke();
+      p.fill(255);
+      p.ellipse(p.mouseX, p.mouseY, 36, 36);
+    };
   }
 
   return (
@@ -36,6 +37,7 @@ export default function SessionTherapist() {
         <h1>Session Therapist</h1>
       </Jumbotron>
       <button onClick={endSessionHandler}>End Session</button>
+      <P5Wrapper sketch={sketch} />
     </div>
   );
 }
