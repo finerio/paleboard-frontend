@@ -1,16 +1,12 @@
-import React, { /*useState,*/ useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { Jumbotron } from "react-bootstrap";
-import { useSelector /*, useDispatch*/ } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
+import P5Wrapper from "react-p5-wrapper";
+
 import { selectSessionId } from "../store/session/selectors";
-
-// import { selectUser } from "../store/user/selectors";
-// import { selectMyPatients } from "../store/patients/selectors";
-
-// import { fetchMyPatients } from "../store/patients/actions";
-// import { createSession } from "../store/session/actions";
 
 export default function SessionPatient() {
   const history = useHistory();
@@ -23,23 +19,25 @@ export default function SessionPatient() {
     }
   }, [sessionId, history]);
 
-  //   const dispatch = useDispatch();
+  function sketch(p) {
+    p.setup = function () {
+      p.createCanvas(600, 600);
+      p.background(200);
+    };
 
-  //   const loggedInUser = useSelector(selectUser);
-  //   const myPatients = useSelector(selectMyPatients);
-  //   const [selectedPatient, setSelectedPatient] = useState(myPatients[0]);
-
-  //   console.log("myPatients", myPatients);
-
-  //   useEffect(() => {
-  //     dispatch(fetchMyPatients());
-  //   }, [dispatch]);
+    p.mouseDragged = function () {
+      p.noStroke();
+      p.fill(50);
+      p.ellipse(p.mouseX, p.mouseY, 36, 36);
+    };
+  }
 
   return (
     <div>
       <Jumbotron>
         <h1>Session Patient</h1>
       </Jumbotron>
+      <P5Wrapper sketch={sketch} />
     </div>
   );
 }
