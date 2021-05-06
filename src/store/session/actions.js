@@ -3,6 +3,8 @@ import axios from "axios";
 import { selectUser } from "../user/selectors";
 import { appLoading, appDoneLoading, setMessage } from "../appState/actions";
 
+import { io } from "socket.io-client";
+
 export const CREATE_SESSION_SUCCESS = "CREATE_SESSION_SUCCESS";
 export const FETCH_SESSION_SUCCESS = "FETCH_SESSION_SUCCESS";
 export const DELETE_SESSION_SUCCESS = "DELETE_SESSION_SUCCESS";
@@ -40,8 +42,12 @@ export const createSession = (patientId) => {
         }
       );
 
+      const ENDPOINT = "http://localhost:4000";
+
+      const socket = io(ENDPOINT, { transports: ["websocket"] });
+
       console.log("response.data", response.data);
-      dispatch(createSessionSuccess(response.data.session));
+      dispatch(createSessionSuccess({ ...response.data.session, socket }));
 
       dispatch(appDoneLoading());
     } catch (error) {

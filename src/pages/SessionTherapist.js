@@ -1,17 +1,23 @@
 import React from "react";
 
 import { Jumbotron } from "react-bootstrap";
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import P5Wrapper from "react-p5-wrapper";
 
 import { endSession } from "../store/session/actions";
 
+import { selectSocket } from "../store/session/selectors";
+
 export default function SessionTherapist() {
   const dispatch = useDispatch();
 
   const history = useHistory();
+
+  const socket = useSelector(selectSocket);
+
+  console.log("socket", socket);
 
   function endSessionHandler() {
     dispatch(endSession());
@@ -25,6 +31,12 @@ export default function SessionTherapist() {
     };
 
     p.mouseDragged = function () {
+      const data = { x: p.mouseX, y: p.mouseY };
+
+      if (socket) {
+        socket.emit("mouse", data);
+      }
+
       p.noStroke();
       p.fill(255);
       p.ellipse(p.mouseX, p.mouseY, 36, 36);
