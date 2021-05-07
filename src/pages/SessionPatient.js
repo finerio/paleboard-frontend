@@ -8,8 +8,8 @@ import P5Wrapper from "react-p5-wrapper";
 
 import { fetchSession } from "../store/session/actions";
 
-import { selectSessionId } from "../store/session/selectors";
-import { selectSocket } from "../store/session/selectors";
+import { selectSessionId, selectSocket } from "../store/session/selectors";
+import { selectUser } from "../store/user/selectors";
 
 export default function SessionPatient() {
   const history = useHistory();
@@ -19,13 +19,17 @@ export default function SessionPatient() {
 
   const socket = useSelector(selectSocket);
 
-  useEffect(() => {
-    dispatch(fetchSession());
+  const loggedInUser = useSelector(selectUser);
 
-    if (!sessionId) {
+  useEffect(() => {
+    if (!loggedInUser.token) {
+      history.push("/");
+    } else if (!sessionId) {
       history.push("/wait-for-session");
+    } else {
+      dispatch(fetchSession());
     }
-  }, [sessionId, history, dispatch]);
+  }, [sessionId, history, dispatch, loggedInUser.token]);
 
   function sketch(p) {
     p.setup = function () {
@@ -46,14 +50,14 @@ export default function SessionPatient() {
     };
 
     p.newDrawing = function (data) {
-      console.log("p.newDrawing data=", data);
+      // console.log("p.newDrawing data=", data);
 
       p.noStroke();
       p.fill(0);
       p.ellipse(data.x, data.y, 36, 36);
     };
 
-    console.log("p.newDrawing", p.newDrawing);
+    //  console.log("p.newDrawing", p.newDrawing);
 
     if (socket) {
       socket.on("mouse", p.newDrawing);

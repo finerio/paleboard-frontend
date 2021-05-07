@@ -9,6 +9,7 @@ import { selectSessionId } from "../store/session/selectors";
 
 import { fetchMyPatients } from "../store/patients/actions";
 import { createSession } from "../store/session/actions";
+import { selectUser } from "../store/user/selectors";
 
 export default function CreateSession() {
   const dispatch = useDispatch();
@@ -16,18 +17,26 @@ export default function CreateSession() {
 
   const myPatients = useSelector(selectMyPatients);
   const sessionId = useSelector(selectSessionId);
+  const loggedInUser = useSelector(selectUser);
+  const [selectedPatient, setSelectedPatient] = useState("");
+  const [gotPatients, setGotPatients] = useState(false);
 
-  const [selectedPatient, setSelectedPatient] = useState(myPatients[0]);
-
-  console.log("myPatients", myPatients);
+  if (myPatients && myPatients.length > 0 && !gotPatients) {
+    setSelectedPatient(myPatients[0].id);
+    setGotPatients(true);
+  }
 
   useEffect(() => {
-    if (sessionId) {
+    if (!loggedInUser.token) {
+      history.push("/");
+    } else if (sessionId) {
       history.push("/session-therapist");
+    } else {
+      dispatch(fetchMyPatients());
     }
+  }, [dispatch, sessionId, history, loggedInUser.token]);
 
-    dispatch(fetchMyPatients());
-  }, [dispatch, sessionId, history]);
+  console.log("myPatients", myPatients);
 
   function beginSession(event) {
     event.preventDefault();
