@@ -112,8 +112,14 @@ export const fetchSession = () => {
         },
       });
 
+      const ENDPOINT = "http://localhost:4000";
+
+      const socket = io(ENDPOINT, { transports: ["websocket"] });
+
+      console.log("socket", socket);
+
       console.log("response.data", response.data);
-      dispatch(fetchSessionSuccess(response.data.session));
+      dispatch(fetchSessionSuccess({ ...response.data.session, socket }));
 
       dispatch(appDoneLoading());
     } catch (error) {

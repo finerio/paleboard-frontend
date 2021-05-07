@@ -38,9 +38,23 @@ export default function SessionTherapist() {
       }
 
       p.noStroke();
-      p.fill(255);
+      p.fill(0);
       p.ellipse(p.mouseX, p.mouseY, 36, 36);
     };
+
+    p.newDrawing = function (data) {
+      console.log("p.newDrawing data=", data);
+
+      p.noStroke();
+      p.fill(255);
+      p.ellipse(data.x, data.y, 36, 36);
+    };
+
+    console.log("p.newDrawing", p.newDrawing);
+
+    if (socket) {
+      socket.on("mouse", p.newDrawing);
+    }
   }
 
   return (
