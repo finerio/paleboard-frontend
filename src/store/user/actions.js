@@ -1,5 +1,8 @@
-import { apiUrl } from "../../config/constants";
+import { apiUrl, SOCKET_ENDPOINT } from "../../config/constants";
 import axios from "axios";
+
+import { io } from "socket.io-client";
+
 import { selectToken } from "./selectors";
 import {
   appLoading,
@@ -36,7 +39,12 @@ export const signUp = (name, email, password) => {
         password,
       });
 
+      const socket = io(SOCKET_ENDPOINT, { transports: ["websocket"] });
+
+      response.data.socket = socket;
+
       dispatch(loginSuccess(response.data));
+
       dispatch(showMessageWithTimeout("success", true, "account created"));
       dispatch(appDoneLoading());
     } catch (error) {
@@ -60,6 +68,12 @@ export const login = (email, password, role) => {
         email,
         password,
       });
+
+      const socket = io(SOCKET_ENDPOINT, { transports: ["websocket"] });
+
+      console.log("socket", socket);
+
+      response.data.socket = socket;
 
       dispatch(loginSuccess(response.data));
       dispatch(showMessageWithTimeout("success", false, "welcome back!", 1500));

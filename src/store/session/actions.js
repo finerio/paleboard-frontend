@@ -3,6 +3,8 @@ import axios from "axios";
 import { selectUser } from "../user/selectors";
 import { appLoading, appDoneLoading, setMessage } from "../appState/actions";
 
+// import { io } from "socket.io-client";
+
 export const CREATE_SESSION_SUCCESS = "CREATE_SESSION_SUCCESS";
 export const FETCH_SESSION_SUCCESS = "FETCH_SESSION_SUCCESS";
 export const DELETE_SESSION_SUCCESS = "DELETE_SESSION_SUCCESS";
@@ -113,7 +115,7 @@ export const fetchSession = () => {
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);
-        dispatch(setMessage("danger", true, error.response.data.message));
+        //   dispatch(setMessage("danger", true, error.response.data.message));
       } else {
         console.log(error.message);
         dispatch(setMessage("danger", true, error.message));

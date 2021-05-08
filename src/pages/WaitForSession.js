@@ -1,10 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 import { Jumbotron } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectSessionId } from "../store/session/selectors";
+import { selectUser, selectSocket } from "../store/user/selectors";
 
 import { fetchSession } from "../store/session/actions";
 
@@ -13,21 +14,39 @@ export default function WaitForSession() {
   const history = useHistory();
 
   const sessionId = useSelector(selectSessionId);
+  const loggedInUser = useSelector(selectUser);
+  const socket = useSelector(selectSocket);
+
+  const [gotSessionMsg, setGotSessionMsg] = useState(false);
 
   useEffect(() => {
-    if (sessionId) {
+    console.log("sessionId", sessionId);
+
+    if (!loggedInUser.token) {
+      history.push("/");
+    } else if (sessionId) {
       history.push("/session-patient");
     }
+  }, [dispatch, sessionId, history, loggedInUser.token, gotSessionMsg]);
+
+  function sessionStartedHandler(data) {
+    console.log("sessionStartedHandler(data = ", data);
 
     dispatch(fetchSession());
-  }, [dispatch, sessionId, history]);
+
+    setGotSessionMsg(true);
+  }
+
+  if (socket) {
+    socket.on("session", sessionStartedHandler);
+  }
 
   return (
     <div>
       <Jumbotron>
         <h1>Wait For Session</h1>
       </Jumbotron>
-      <p>please wait for your session to begin</p>
+      <p>Please wait for your session to begin</p>
     </div>
   );
 }
