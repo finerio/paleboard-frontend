@@ -8,7 +8,7 @@ import P5Wrapper from "react-p5-wrapper";
 
 import { endSession } from "../store/session/actions";
 
-import { selectSessionId, selectPatientId } from "../store/session/selectors";
+import { selectSessionId } from "../store/session/selectors";
 import { selectUser, selectSocket } from "../store/user/selectors";
 
 export default function SessionTherapist() {
@@ -20,19 +20,7 @@ export default function SessionTherapist() {
 
   const sessionId = useSelector(selectSessionId);
   const loggedInUser = useSelector(selectUser);
-  const patientId = useSelector(selectPatientId);
-  const [sentSessionMessage, setSentSessionMessage] = useState(false);
-
-  console.log("evaluating sentSessionMessage");
-  console.log("sentSessionMessage", sentSessionMessage);
-  console.log("socket", socket);
-
-  if (socket && !sentSessionMessage) {
-    console.log("sending session message via socket");
-
-    socket.emit("session", { patientId });
-    setSentSessionMessage(true);
-  }
+  const [brushColor, setBrushColor] = useState("#FFFFFF");
 
   useEffect(() => {
     if (!loggedInUser.token) {
@@ -63,16 +51,16 @@ export default function SessionTherapist() {
       }
 
       p.noStroke();
-      p.fill(0);
-      p.ellipse(p.mouseX, p.mouseY, 36, 36);
+      p.fill(brushColor);
+      p.ellipse(p.mouseX, p.mouseY, 20, 20);
     };
 
     p.newDrawing = function (data) {
       // console.log("p.newDrawing data=", data);
 
-      p.noStroke();
+      //p.noStroke();
       p.fill(255);
-      p.ellipse(data.x, data.y, 36, 36);
+      p.ellipse(data.x, data.y, 20, 20);
     };
 
     //  console.log("p.newDrawing", p.newDrawing);
@@ -82,12 +70,24 @@ export default function SessionTherapist() {
     }
   }
 
+  function changeBrushColorHandler(event) {
+    event.preventDefault();
+
+    setBrushColor(event.target.value);
+  }
+
   return (
     <div>
       <Jumbotron>
-        <h1>Session Therapist</h1>
+        <h1>Therapist view</h1>
       </Jumbotron>
-      <button onClick={endSessionHandler}>End Session</button>
+      <button onClick={endSessionHandler}>End Session</button>{" "}
+      <label>Brush color: </label>
+      <input
+        type="color"
+        value={brushColor}
+        onChange={changeBrushColorHandler}
+      ></input>
       <P5Wrapper sketch={sketch} />
     </div>
   );

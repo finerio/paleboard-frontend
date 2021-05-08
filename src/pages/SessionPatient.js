@@ -46,7 +46,7 @@ export default function SessionPatient() {
 
       p.noStroke();
       p.fill(255);
-      p.ellipse(p.mouseX, p.mouseY, 36, 36);
+      p.ellipse(p.mouseX, p.mouseY, 20, 20);
     };
 
     p.newDrawing = function (data) {
@@ -54,7 +54,7 @@ export default function SessionPatient() {
 
       p.noStroke();
       p.fill(0);
-      p.ellipse(data.x, data.y, 36, 36);
+      p.ellipse(data.x, data.y, 20, 20);
     };
 
     //  console.log("p.newDrawing", p.newDrawing);
@@ -67,7 +67,7 @@ export default function SessionPatient() {
   return (
     <div>
       <Jumbotron>
-        <h1>Session Patient</h1>
+        <h1>Patient view</h1>
       </Jumbotron>
       <P5Wrapper sketch={sketch} />
     </div>
