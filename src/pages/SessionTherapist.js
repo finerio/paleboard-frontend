@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Jumbotron } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,9 +8,8 @@ import P5Wrapper from "react-p5-wrapper";
 
 import { endSession } from "../store/session/actions";
 
-import { selectSocket } from "../store/session/selectors";
-import { selectSessionId } from "../store/session/selectors";
-import { selectUser } from "../store/user/selectors";
+import { selectSessionId, selectPatientId } from "../store/session/selectors";
+import { selectUser, selectSocket } from "../store/user/selectors";
 
 export default function SessionTherapist() {
   const dispatch = useDispatch();
@@ -19,10 +18,21 @@ export default function SessionTherapist() {
 
   const socket = useSelector(selectSocket);
 
-  console.log("socket", socket);
-
   const sessionId = useSelector(selectSessionId);
   const loggedInUser = useSelector(selectUser);
+  const patientId = useSelector(selectPatientId);
+  const [sentSessionMessage, setSentSessionMessage] = useState(false);
+
+  console.log("evaluating sentSessionMessage");
+  console.log("sentSessionMessage", sentSessionMessage);
+  console.log("socket", socket);
+
+  if (socket && !sentSessionMessage) {
+    console.log("sending session message via socket");
+
+    socket.emit("session", { patientId });
+    setSentSessionMessage(true);
+  }
 
   useEffect(() => {
     if (!loggedInUser.token) {

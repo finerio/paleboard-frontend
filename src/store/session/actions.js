@@ -3,7 +3,7 @@ import axios from "axios";
 import { selectUser } from "../user/selectors";
 import { appLoading, appDoneLoading, setMessage } from "../appState/actions";
 
-import { io } from "socket.io-client";
+// import { io } from "socket.io-client";
 
 export const CREATE_SESSION_SUCCESS = "CREATE_SESSION_SUCCESS";
 export const FETCH_SESSION_SUCCESS = "FETCH_SESSION_SUCCESS";
@@ -42,12 +42,8 @@ export const createSession = (patientId) => {
         }
       );
 
-      const ENDPOINT = "http://localhost:4000";
-
-      const socket = io(ENDPOINT, { transports: ["websocket"] });
-
       console.log("response.data", response.data);
-      dispatch(createSessionSuccess({ ...response.data.session, socket }));
+      dispatch(createSessionSuccess(response.data.session));
 
       dispatch(appDoneLoading());
     } catch (error) {
@@ -112,20 +108,14 @@ export const fetchSession = () => {
         },
       });
 
-      const ENDPOINT = "http://localhost:4000";
-
-      const socket = io(ENDPOINT, { transports: ["websocket"] });
-
-      console.log("socket", socket);
-
       console.log("response.data", response.data);
-      dispatch(fetchSessionSuccess({ ...response.data.session, socket }));
+      dispatch(fetchSessionSuccess(response.data.session));
 
       dispatch(appDoneLoading());
     } catch (error) {
       if (error.response) {
         console.log(error.response.data.message);
-        dispatch(setMessage("danger", true, error.response.data.message));
+        //   dispatch(setMessage("danger", true, error.response.data.message));
       } else {
         console.log(error.message);
         dispatch(setMessage("danger", true, error.message));

@@ -8,7 +8,6 @@ const initialState = {
   id: null,
   therapistId: null,
   patientId: null,
-  socket: null,
 };
 
 export default (state = initialState, action) => {

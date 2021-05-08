@@ -8,8 +8,8 @@ import P5Wrapper from "react-p5-wrapper";
 
 import { fetchSession } from "../store/session/actions";
 
-import { selectSessionId, selectSocket } from "../store/session/selectors";
-import { selectUser } from "../store/user/selectors";
+import { selectSessionId } from "../store/session/selectors";
+import { selectUser, selectSocket } from "../store/user/selectors";
 
 export default function SessionPatient() {
   const history = useHistory();

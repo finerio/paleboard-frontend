@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
 import { Jumbotron } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectSessionId } from "../store/session/selectors";
-import { selectUser } from "../store/user/selectors";
+import { selectUser, selectSocket } from "../store/user/selectors";
 
 import { fetchSession } from "../store/session/actions";
 
@@ -15,6 +15,9 @@ export default function WaitForSession() {
 
   const sessionId = useSelector(selectSessionId);
   const loggedInUser = useSelector(selectUser);
+  const socket = useSelector(selectSocket);
+
+  const [gotSessionMsg, setGotSessionMsg] = useState(false);
 
   useEffect(() => {
     console.log("sessionId", sessionId);
@@ -23,10 +26,20 @@ export default function WaitForSession() {
       history.push("/");
     } else if (sessionId) {
       history.push("/session-patient");
-    } else {
-      dispatch(fetchSession());
     }
-  }, [dispatch, sessionId, history, loggedInUser.token]);
+  }, [dispatch, sessionId, history, loggedInUser.token, gotSessionMsg]);
+
+  function sessionStartedHandler(data) {
+    console.log("sessionStartedHandler(data = ", data);
+
+    dispatch(fetchSession());
+
+    setGotSessionMsg(true);
+  }
+
+  if (socket) {
+    socket.on("session", sessionStartedHandler);
+  }
 
   return (
     <div>
