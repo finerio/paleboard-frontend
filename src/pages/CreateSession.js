@@ -9,7 +9,7 @@ import { selectSessionId } from "../store/session/selectors";
 
 import { fetchMyPatients } from "../store/patients/actions";
 import { createSession } from "../store/session/actions";
-import { selectUser /*, selectSocket*/ } from "../store/user/selectors";
+import { selectUser } from "../store/user/selectors";
 
 export default function CreateSession() {
   const dispatch = useDispatch();
@@ -18,8 +18,6 @@ export default function CreateSession() {
   const myPatients = useSelector(selectMyPatients);
   const sessionId = useSelector(selectSessionId);
   const loggedInUser = useSelector(selectUser);
-  //   const socket = useSelector(selectSocket);
-  //   const newSessionId = useSelector(selectSessionId);
 
   const [selectedPatient, setSelectedPatient] = useState("");
   const [gotPatients, setGotPatients] = useState(false);
@@ -57,8 +55,6 @@ export default function CreateSession() {
         patientBrushColor
       )
     );
-
-    //  socket.emit("session", newSessionId);
   }
 
   return (

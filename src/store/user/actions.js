@@ -29,15 +29,26 @@ const tokenStillValid = (userWithoutToken) => ({
 
 export const logOut = () => ({ type: LOG_OUT });
 
-export const signUp = (name, email, password) => {
+export const signUp = (name, email, password, role, therapistId) => {
   return async (dispatch, getState) => {
     dispatch(appLoading());
     try {
-      const response = await axios.post(`${apiUrl}/signup`, {
-        name,
-        email,
-        password,
-      });
+      let response = null;
+
+      if (role === "patient") {
+        response = await axios.post(`${apiUrl}/signup-patient`, {
+          name,
+          email,
+          password,
+          therapistId,
+        });
+      } else {
+        response = await axios.post(`${apiUrl}/signup-therapist`, {
+          name,
+          email,
+          password,
+        });
+      }
 
       const socket = io(SOCKET_ENDPOINT, { transports: ["websocket"] });
 
