@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { Jumbotron } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 
-import { selectSessionId } from "../store/session/selectors";
+import { selectSession } from "../store/session/selectors";
 import { selectUser, selectSocket } from "../store/user/selectors";
 
 import { fetchSession } from "../store/session/actions";
@@ -13,33 +13,50 @@ export default function WaitForSession() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const sessionId = useSelector(selectSessionId);
+  const session = useSelector(selectSession);
+
+  const fetchedSessionId = session.id;
   const loggedInUser = useSelector(selectUser);
   const socket = useSelector(selectSocket);
 
-  const [gotSessionMsg, setGotSessionMsg] = useState(false);
+  const [sentSessionRequest, setSentSessionRequest] = useState(false);
 
   useEffect(() => {
-    console.log("sessionId", sessionId);
+    console.log("fetchedSessionId", fetchedSessionId);
 
     if (!loggedInUser.token) {
       history.push("/");
-    } else if (sessionId) {
+    } else if (fetchedSessionId) {
       history.push("/session-patient");
     }
-  }, [dispatch, sessionId, history, loggedInUser.token, gotSessionMsg]);
+  }, [dispatch, fetchedSessionId, history, loggedInUser.token]);
 
   function sessionStartedHandler(sessionId) {
     console.log("sessionStartedHandler(sessionId = ", sessionId);
 
-    dispatch(fetchSession(sessionId));
+    console.log("fetchedSessionId", fetchedSessionId);
 
-    setGotSessionMsg(true);
+    if (fetchedSessionId === null) {
+      console.log(
+        "fetchedSessionId is null, fetchedSessionId = fetchedSessionId"
+      );
+
+      if (sessionId) {
+        dispatch(fetchSession(sessionId));
+
+        //   setGotSessionMsg(true);
+      }
+    }
   }
 
   if (socket) {
     socket.on("session", sessionStartedHandler);
-    socket.emit("sessionRequest", loggedInUser.id);
+
+    if (!sentSessionRequest) {
+      socket.emit("sessionRequest", loggedInUser.id);
+
+      setSentSessionRequest(true);
+    }
   }
 
   return (
