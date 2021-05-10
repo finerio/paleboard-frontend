@@ -95,18 +95,21 @@ export const endSession = () => {
   };
 };
 
-export const fetchSession = () => {
+export const fetchSession = (sessionId) => {
   return async (dispatch, getState) => {
     dispatch(appLoading());
 
     const { token } = selectUser(getState());
 
     try {
-      const response = await axios.get(`${apiUrl}/session`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${apiUrl}/session?sessionId=${sessionId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       console.log("response.data", response.data);
       dispatch(fetchSessionSuccess(response.data.session));

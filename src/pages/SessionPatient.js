@@ -27,7 +27,7 @@ export default function SessionPatient() {
     } else if (!sessionId) {
       history.push("/wait-for-session");
     } else {
-      dispatch(fetchSession());
+      dispatch(fetchSession(sessionId));
     }
   }, [sessionId, history, dispatch, loggedInUser.token]);
 

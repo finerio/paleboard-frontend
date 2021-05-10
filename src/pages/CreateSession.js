@@ -19,6 +19,8 @@ export default function CreateSession() {
   const sessionId = useSelector(selectSessionId);
   const loggedInUser = useSelector(selectUser);
   const socket = useSelector(selectSocket);
+  const newSessionId = useSelector(selectSessionId);
+
   const [selectedPatient, setSelectedPatient] = useState("");
   const [gotPatients, setGotPatients] = useState(false);
 
@@ -45,7 +47,8 @@ export default function CreateSession() {
     console.log("selectedPatient", selectedPatient);
 
     dispatch(createSession(selectedPatient));
-    socket.emit("session", { selectedPatient });
+
+    socket.emit("session", newSessionId);
   }
 
   return (

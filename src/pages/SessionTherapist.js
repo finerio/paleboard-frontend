@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 
 import { Jumbotron } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import P5Wrapper from "react-p5-wrapper";
 
-import { endSession } from "../store/session/actions";
+// import { endSession } from "../store/session/actions";
 
-import { selectSessionId } from "../store/session/selectors";
+import { selectSessionId, selectPatientId } from "../store/session/selectors";
 import { selectUser, selectSocket } from "../store/user/selectors";
 
 export default function SessionTherapist() {
-  const dispatch = useDispatch();
+  //   const dispatch = useDispatch();
 
   const history = useHistory();
 
@@ -20,7 +20,7 @@ export default function SessionTherapist() {
 
   const sessionId = useSelector(selectSessionId);
   const loggedInUser = useSelector(selectUser);
-  const [brushColor, setBrushColor] = useState("#FFFFFF");
+  const sessionPatientId = useSelector(selectPatientId);
 
   useEffect(() => {
     if (!loggedInUser.token) {
@@ -32,9 +32,14 @@ export default function SessionTherapist() {
     }
   }, [sessionId, history, loggedInUser]);
 
-  function endSessionHandler() {
-    dispatch(endSession());
-    history.push("/create-session");
+  function sessionRequestHandler(patientId) {
+    if (sessionPatientId === patientId) {
+      socket.emit("session", sessionId);
+    }
+  }
+
+  if (socket) {
+    socket.on("sessionRequest", sessionRequestHandler);
   }
 
   function sketch(p) {
@@ -51,29 +56,18 @@ export default function SessionTherapist() {
       }
 
       p.noStroke();
-      p.fill(brushColor);
+      p.fill(0);
       p.ellipse(p.mouseX, p.mouseY, 20, 20);
     };
 
     p.newDrawing = function (data) {
-      // console.log("p.newDrawing data=", data);
-
-      //p.noStroke();
       p.fill(255);
       p.ellipse(data.x, data.y, 20, 20);
     };
 
-    //  console.log("p.newDrawing", p.newDrawing);
-
     if (socket) {
       socket.on("mouse", p.newDrawing);
     }
-  }
-
-  function changeBrushColorHandler(event) {
-    event.preventDefault();
-
-    setBrushColor(event.target.value);
   }
 
   return (
@@ -81,14 +75,29 @@ export default function SessionTherapist() {
       <Jumbotron>
         <h1>Therapist view</h1>
       </Jumbotron>
-      <button onClick={endSessionHandler}>End Session</button>{" "}
-      <label>Brush color: </label>
-      <input
-        type="color"
-        value={brushColor}
-        onChange={changeBrushColorHandler}
-      ></input>
       <P5Wrapper sketch={sketch} />
     </div>
   );
 }
+
+// <button onClick={endSessionHandler}>End Session</button>{" "}
+
+/* <label>Brush color: </label>
+<input
+  type="color"
+  value={brushColor}
+  onChange={changeBrushColorHandler}
+></input> */
+
+// function changeBrushColorHandler(event) {
+//    event.preventDefault();
+
+//    setBrushColor(event.target.value);
+//  }
+
+// function endSessionHandler() {
+//    dispatch(endSession());
+//    history.push("/create-session");
+//  }
+
+// const [brushColor, setBrushColor] = useState("#FFFFFF");

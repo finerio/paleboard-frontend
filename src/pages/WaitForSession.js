@@ -29,16 +29,17 @@ export default function WaitForSession() {
     }
   }, [dispatch, sessionId, history, loggedInUser.token, gotSessionMsg]);
 
-  function sessionStartedHandler(data) {
-    console.log("sessionStartedHandler(data = ", data);
+  function sessionStartedHandler(sessionId) {
+    console.log("sessionStartedHandler(sessionId = ", sessionId);
 
-    dispatch(fetchSession());
+    dispatch(fetchSession(sessionId));
 
     setGotSessionMsg(true);
   }
 
   if (socket) {
     socket.on("session", sessionStartedHandler);
+    socket.emit("sessionRequest", loggedInUser.id);
   }
 
   return (
