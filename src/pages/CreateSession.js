@@ -9,7 +9,7 @@ import { selectSessionId } from "../store/session/selectors";
 
 import { fetchMyPatients } from "../store/patients/actions";
 import { createSession } from "../store/session/actions";
-import { selectUser } from "../store/user/selectors";
+import { selectUser /*, selectSocket*/ } from "../store/user/selectors";
 
 export default function CreateSession() {
   const dispatch = useDispatch();
@@ -18,8 +18,14 @@ export default function CreateSession() {
   const myPatients = useSelector(selectMyPatients);
   const sessionId = useSelector(selectSessionId);
   const loggedInUser = useSelector(selectUser);
+  //   const socket = useSelector(selectSocket);
+  //   const newSessionId = useSelector(selectSessionId);
+
   const [selectedPatient, setSelectedPatient] = useState("");
   const [gotPatients, setGotPatients] = useState(false);
+  const [backgroundColor, setBackgroundColor] = useState("#F0E6DF");
+  const [therapistBrushColor, setTherapistBrushColor] = useState("#FFFFFF");
+  const [patientBrushColor, setPatientBrushColor] = useState("#000000");
 
   if (myPatients && myPatients.length > 0 && !gotPatients) {
     setSelectedPatient(myPatients[0].id);
@@ -43,7 +49,16 @@ export default function CreateSession() {
 
     console.log("selectedPatient", selectedPatient);
 
-    dispatch(createSession(selectedPatient));
+    dispatch(
+      createSession(
+        selectedPatient,
+        backgroundColor,
+        therapistBrushColor,
+        patientBrushColor
+      )
+    );
+
+    //  socket.emit("session", newSessionId);
   }
 
   return (
@@ -64,6 +79,33 @@ export default function CreateSession() {
           </option>
         ))}
       </select>
+      <p></p>
+      <label>Background color: </label>{" "}
+      <input
+        type="color"
+        value={backgroundColor}
+        onChange={(event) => {
+          setBackgroundColor(event.target.value);
+        }}
+      ></input>
+      <p></p>
+      <label>Therapist brush color: </label>{" "}
+      <input
+        type="color"
+        value={therapistBrushColor}
+        onChange={(event) => {
+          setTherapistBrushColor(event.target.value);
+        }}
+      ></input>
+      <p></p>
+      <label>Patient brush color: </label>{" "}
+      <input
+        type="color"
+        value={patientBrushColor}
+        onChange={(event) => {
+          setPatientBrushColor(event.target.value);
+        }}
+      ></input>
       <p></p>
       <button onClick={beginSession}>Begin Session</button>
     </div>

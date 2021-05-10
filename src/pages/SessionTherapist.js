@@ -1,37 +1,36 @@
 import React, { useState, useEffect } from "react";
 
 import { Jumbotron } from "react-bootstrap";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import P5Wrapper from "react-p5-wrapper";
 
-import { endSession } from "../store/session/actions";
-
-import { selectSessionId, selectPatientId } from "../store/session/selectors";
+import { selectSession } from "../store/session/selectors";
 import { selectUser, selectSocket } from "../store/user/selectors";
 
 export default function SessionTherapist() {
-  const dispatch = useDispatch();
-
   const history = useHistory();
 
   const socket = useSelector(selectSocket);
 
-  const sessionId = useSelector(selectSessionId);
+  const session = useSelector(selectSession);
   const loggedInUser = useSelector(selectUser);
-  const patientId = useSelector(selectPatientId);
-  const [sentSessionMessage, setSentSessionMessage] = useState(false);
 
-  console.log("evaluating sentSessionMessage");
-  console.log("sentSessionMessage", sentSessionMessage);
-  console.log("socket", socket);
+  const sessionId = session.id;
+  const sessionPatientId = session.patientId;
 
-  if (socket && !sentSessionMessage) {
-    console.log("sending session message via socket");
+  const [sessionRequestAnswered, setSessionRequestAnswered] = useState(false);
+  const [sessionMsgSent, setSessionMsgSent] = useState(false);
 
-    socket.emit("session", { patientId });
-    setSentSessionMessage(true);
+  if (!sessionMsgSent) {
+    if (socket) {
+      console.log("sending session message, sessionId = ", sessionId);
+
+      socket.emit("session", sessionId);
+    }
+
+    setSessionMsgSent(true);
   }
 
   useEffect(() => {
@@ -44,15 +43,34 @@ export default function SessionTherapist() {
     }
   }, [sessionId, history, loggedInUser]);
 
-  function endSessionHandler() {
-    dispatch(endSession());
-    history.push("/create-session");
+  function sessionRequestHandler(patientId) {
+    console.log("sessionRequestHandler( patientId = ", patientId);
+
+    console.log("sessionPatientId", sessionPatientId);
+
+    console.log("sessionRequestAnswered", sessionRequestAnswered);
+
+    console.log("sessionId", sessionId);
+    if (sessionRequestAnswered === false) {
+      if (sessionPatientId === patientId) {
+        console.log("sessionPatientId === patientId");
+
+        console.log("sending session message, sessionId = ", sessionId);
+
+        socket.emit("session", sessionId);
+      }
+      setSessionRequestAnswered(true);
+    }
+  }
+
+  if (socket) {
+    socket.on("sessionRequest", sessionRequestHandler);
   }
 
   function sketch(p) {
     p.setup = function () {
-      p.createCanvas(600, 600);
-      p.background(200);
+      p.createCanvas(1030, 730);
+      p.background(session.backgroundColor);
     };
 
     p.mouseDragged = function () {
@@ -63,19 +81,17 @@ export default function SessionTherapist() {
       }
 
       p.noStroke();
-      p.fill(0);
-      p.ellipse(p.mouseX, p.mouseY, 36, 36);
+
+      // console.log("session", session);
+
+      p.fill(session.therapistBrushColor);
+      p.ellipse(p.mouseX, p.mouseY, 20, 20);
     };
 
     p.newDrawing = function (data) {
-      // console.log("p.newDrawing data=", data);
-
-      p.noStroke();
-      p.fill(255);
-      p.ellipse(data.x, data.y, 36, 36);
+      p.fill(session.patientBrushColor);
+      p.ellipse(data.x, data.y, 20, 20);
     };
-
-    //  console.log("p.newDrawing", p.newDrawing);
 
     if (socket) {
       socket.on("mouse", p.newDrawing);
@@ -85,10 +101,31 @@ export default function SessionTherapist() {
   return (
     <div>
       <Jumbotron>
-        <h1>Session Therapist</h1>
+        <h1>Therapist view</h1>
       </Jumbotron>
-      <button onClick={endSessionHandler}>End Session</button>
       <P5Wrapper sketch={sketch} />
     </div>
   );
 }
+
+// <button onClick={endSessionHandler}>End Session</button>{" "}
+
+/* <label>Brush color: </label>
+<input
+  type="color"
+  value={brushColor}
+  onChange={changeBrushColorHandler}
+></input> */
+
+// function changeBrushColorHandler(event) {
+//    event.preventDefault();
+
+//    setBrushColor(event.target.value);
+//  }
+
+// function endSessionHandler() {
+//    dispatch(endSession());
+//    history.push("/create-session");
+//  }
+
+// const [brushColor, setBrushColor] = useState("#FFFFFF");

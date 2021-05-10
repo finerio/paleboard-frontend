@@ -2,6 +2,7 @@ import { apiUrl } from "../../config/constants";
 import axios from "axios";
 import { selectUser } from "../user/selectors";
 import { appLoading, appDoneLoading, setMessage } from "../appState/actions";
+import { selectSessionId } from "./selectors";
 
 // import { io } from "socket.io-client";
 
@@ -23,7 +24,12 @@ export const deleteSessionSuccess = () => ({
   type: DELETE_SESSION_SUCCESS,
 });
 
-export const createSession = (patientId) => {
+export const createSession = (
+  patientId,
+  backgroundColor,
+  therapistBrushColor,
+  patientBrushColor
+) => {
   return async (dispatch, getState) => {
     dispatch(appLoading());
 
@@ -34,6 +40,9 @@ export const createSession = (patientId) => {
         `${apiUrl}/session`,
         {
           patientId: patientId,
+          backgroundColor: backgroundColor,
+          therapistBrushColor: therapistBrushColor,
+          patientBrushColor: patientBrushColor,
         },
         {
           headers: {
@@ -43,6 +52,7 @@ export const createSession = (patientId) => {
       );
 
       console.log("response.data", response.data);
+
       dispatch(createSessionSuccess(response.data.session));
 
       dispatch(appDoneLoading());
@@ -95,32 +105,42 @@ export const endSession = () => {
   };
 };
 
-export const fetchSession = () => {
+export const fetchSession = (sessionId) => {
   return async (dispatch, getState) => {
-    dispatch(appLoading());
+    const existingSessionId = selectSessionId(getState());
 
-    const { token } = selectUser(getState());
+    console.log("existingSessionId", existingSessionId);
 
-    try {
-      const response = await axios.get(`${apiUrl}/session`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+    if (!existingSessionId) {
+      dispatch(appLoading());
 
-      console.log("response.data", response.data);
-      dispatch(fetchSessionSuccess(response.data.session));
+      const { token } = selectUser(getState());
 
-      dispatch(appDoneLoading());
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.data.message);
-        //   dispatch(setMessage("danger", true, error.response.data.message));
-      } else {
-        console.log(error.message);
-        dispatch(setMessage("danger", true, error.message));
+      try {
+        const response = await axios.get(
+          `${apiUrl}/session?sessionId=${sessionId}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        console.log("response.data", response.data);
+
+        dispatch(fetchSessionSuccess(response.data.session));
+
+        dispatch(appDoneLoading());
+      } catch (error) {
+        if (error.response) {
+          console.log(error.response.data.message);
+          //   dispatch(setMessage("danger", true, error.response.data.message));
+        } else {
+          console.log(error.message);
+          dispatch(setMessage("danger", true, error.message));
+        }
+        dispatch(appDoneLoading());
       }
-      dispatch(appDoneLoading());
     }
   };
 };
