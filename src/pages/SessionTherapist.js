@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { Jumbotron } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -81,9 +80,6 @@ export default function SessionTherapist() {
       }
 
       p.noStroke();
-
-      // console.log("session", session);
-
       p.fill(session.therapistBrushColor);
       p.ellipse(p.mouseX, p.mouseY, 20, 20);
     };
@@ -100,9 +96,7 @@ export default function SessionTherapist() {
 
   return (
     <div>
-      <Jumbotron>
-        <h1>Therapist view</h1>
-      </Jumbotron>
+      <h1>Therapist view</h1>
       <P5Wrapper sketch={sketch} />
     </div>
   );

@@ -1,32 +1,25 @@
 import React from "react";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
+// import Navbar from "react-bootstrap/Navbar";
+// import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectToken } from "../../store/user/selectors";
-import NavbarItem from "./NavbarItem";
-import LoggedIn from "./LoggedIn";
-import LoggedOut from "./LoggedOut";
+import { logOut } from "../../store/user/actions";
+import { selectUser } from "../../store/user/selectors";
 
 export default function Navigation() {
+  const dispatch = useDispatch();
   const token = useSelector(selectToken);
-
-  const loginLogoutControls = token ? <LoggedIn /> : <LoggedOut />;
+  const user = useSelector(selectUser);
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand as={NavLink} to="/">
+    <div>
+      <NavLink to="/" exact>
         paleboard
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav style={{ width: "100%" }} fill>
-          {!token && <NavbarItem path="/" linkText="Home" />}
-          {loginLogoutControls}
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+      </NavLink>
+      {" | "}
+      <span>{token ? user.email : " "}</span> {" | "}{" "}
+      <button onClick={() => dispatch(logOut())}>Logout</button>
+    </div>
   );
 }
-
-// <NavbarItem path="/other" linkText="Other" />

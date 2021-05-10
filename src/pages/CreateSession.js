@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-import { Jumbotron } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectMyPatients } from "../store/patients/selectors";
@@ -59,9 +58,7 @@ export default function CreateSession() {
 
   return (
     <div>
-      <Jumbotron>
-        <h1>Create Session</h1>
-      </Jumbotron>
+      <h1>Create Session</h1>
       <label>Select patient:</label>{" "}
       <select
         onChange={(event) => {

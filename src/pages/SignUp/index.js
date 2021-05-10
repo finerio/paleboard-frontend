@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import { signUp } from "../../store/user/actions";
 import { fetchAllTherapists } from "../../store/therapists/actions";
 import { selectToken, selectUser } from "../../store/user/selectors";
@@ -11,7 +6,6 @@ import { selectTherapists } from "../../store/therapists/selectors";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { Col } from "react-bootstrap";
 
 export default function SignUp() {
   const allTherapists = useSelector(selectTherapists);
@@ -58,54 +52,61 @@ export default function SignUp() {
   }
 
   return (
-    <Container>
-      <Form as={Col} md={{ span: 6, offset: 3 }} className="mt-5">
+    <div>
+      <form className="mt-5">
         <h1 className="mt-5 mb-5">Signup</h1>
-        <Form.Label>Role: </Form.Label>
+        <label>Role: </label>
         <p></p>
-        <ToggleButtonGroup
+        <div
           type="radio"
           name="role"
           defaultValue="patient"
-          onChange={(value) => setRole(value)}
+          onChange={(event) => setRole(event.target.value)}
         >
-          <ToggleButton value="patient">Patient</ToggleButton>
-          <ToggleButton value="therapist">Therapist</ToggleButton>
-        </ToggleButtonGroup>{" "}
+          <input
+            type="radio"
+            value="patient"
+            name="role"
+            defaultChecked={true}
+          ></input>
+          <label>Patient</label>{" "}
+          <input type="radio" value="therapist" name="role"></input>
+          <label>Therapist</label>
+        </div>{" "}
         <p></p>
-        <Form.Group controlId="formBasicName">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
+        <fieldset controlid="formBasicName">
+          <label>Name</label>
+          <input
             value={name}
             onChange={(event) => setName(event.target.value)}
             type="text"
             placeholder="Enter name"
             required
           />
-        </Form.Group>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
+        </fieldset>
+        <fieldset controlid="formBasicEmail">
+          <label>Email address</label>
+          <input
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             type="email"
             placeholder="Enter email"
             required
           />
-          <Form.Text className="text-muted">
+          <p className="text-muted">
             We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+          </p>
+        </fieldset>
+        <fieldset controlid="formBasicPassword">
+          <label>Password</label>
+          <input
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             type="password"
             placeholder="Password"
             required
           />
-        </Form.Group>
+        </fieldset>
         {role === "patient" && (
           <div>
             <label>Select therapist:</label>
@@ -124,13 +125,13 @@ export default function SignUp() {
             <p></p>
           </div>
         )}
-        <Form.Group className="mt-5">
-          <Button variant="primary" type="submit" onClick={submitForm}>
+        <fieldset className="mt-5">
+          <button variant="primary" type="submit" onClick={submitForm}>
             Sign up
-          </Button>
-        </Form.Group>
+          </button>
+        </fieldset>
         <Link to="/login">Click here to log in</Link>
-      </Form>
-    </Container>
+      </form>
+    </div>
   );
 }

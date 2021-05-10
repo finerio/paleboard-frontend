@@ -1,21 +1,15 @@
 import React, { useEffect } from "react";
 
-import { Jumbotron } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import P5Wrapper from "react-p5-wrapper";
-
-// import { fetchSession } from "../store/session/actions";
 
 import { selectSession } from "../store/session/selectors";
 import { selectUser, selectSocket } from "../store/user/selectors";
 
 export default function SessionPatient() {
   const history = useHistory();
-  //   const dispatch = useDispatch();
-
-  //   const [sessionFetched, setSessionFetched] = useState(false);
 
   const session = useSelector(selectSession);
   const sessionId = session.id;
@@ -65,9 +59,7 @@ export default function SessionPatient() {
 
   return (
     <div>
-      <Jumbotron>
-        <h1>Patient view</h1>
-      </Jumbotron>
+      <h1>Patient view</h1>
       <P5Wrapper sketch={sketch} />
     </div>
   );

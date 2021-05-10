@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-import { Jumbotron } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectSession } from "../store/session/selectors";
@@ -43,8 +42,6 @@ export default function WaitForSession() {
 
       if (sessionId) {
         dispatch(fetchSession(sessionId));
-
-        //   setGotSessionMsg(true);
       }
     }
   }
@@ -61,9 +58,7 @@ export default function WaitForSession() {
 
   return (
     <div>
-      <Jumbotron>
-        <h1>Wait For Session</h1>
-      </Jumbotron>
+      <h1>Wait For Session</h1>
       <p>Please wait for your session to begin</p>
     </div>
   );

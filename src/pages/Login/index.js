@@ -1,14 +1,8 @@
 import React, { useState, useEffect } from "react";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import { login } from "../../store/user/actions";
 import { selectToken, selectUser } from "../../store/user/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { Col } from "react-bootstrap";
 
 export default function SignUp() {
   const [email, setEmail] = useState("");
@@ -30,7 +24,7 @@ export default function SignUp() {
   }, [token, history, loggedInUser.therapistId]);
 
   function submitForm(event) {
-    console.log("hi");
+    //  console.log("hi");
     event.preventDefault();
 
     dispatch(login(email, password, role));
@@ -41,51 +35,58 @@ export default function SignUp() {
   }
 
   return (
-    <Container>
-      <Form as={Col} md={{ span: 6, offset: 3 }} className="mt-5">
+    <div>
+      <form>
         <h1 className="mt-5 mb-5">Login</h1>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Role: </Form.Label>
+        <fieldset controlid="formBasicEmail">
+          <label>Role: </label>
           <p></p>
-          <ToggleButtonGroup
+          <div
             type="radio"
             name="role"
             defaultValue="patient"
-            onChange={(value) => setRole(value)}
+            onChange={(event) => setRole(event.target.value)}
           >
-            <ToggleButton value="patient">Patient</ToggleButton>
-            <ToggleButton value="therapist">Therapist</ToggleButton>
-          </ToggleButtonGroup>{" "}
+            <input
+              type="radio"
+              value="patient"
+              name="role"
+              defaultChecked={true}
+            ></input>
+            <label>Patient</label>{" "}
+            <input type="radio" value="therapist" name="role"></input>
+            <label>Therapist</label>
+          </div>{" "}
           <p></p>
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
+          <label>Email address</label>
+          <input
             value={email}
             onChange={(event) => setEmail(event.target.value)}
             type="email"
             placeholder="Enter email"
             required
           />
-        </Form.Group>
+        </fieldset>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
+        <fieldset controlid="formBasicPassword">
+          <label>Password</label>
+          <input
             value={password}
             onChange={(event) => setPassword(event.target.value)}
             type="password"
             placeholder="Password"
             required
           />
-        </Form.Group>
-        <Form.Group className="mt-5">
-          <Button variant="primary" type="submit" onClick={submitForm}>
+        </fieldset>
+        <fieldset className="mt-5">
+          <button variant="primary" type="submit" onClick={submitForm}>
             Log in
-          </Button>
-        </Form.Group>
+          </button>
+        </fieldset>
         <Link to="/signup" style={{ textAlign: "center" }}>
           Click here to sign up
         </Link>
-      </Form>
-    </Container>
+      </form>
+    </div>
   );
 }
