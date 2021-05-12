@@ -1,16 +1,10 @@
 import React, { useState, useEffect } from "react";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import { login } from "../../store/user/actions";
 import { selectToken, selectUser } from "../../store/user/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { Col } from "react-bootstrap";
 
-export default function SignUp() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("patient");
@@ -30,7 +24,7 @@ export default function SignUp() {
   }, [token, history, loggedInUser.therapistId]);
 
   function submitForm(event) {
-    console.log("hi");
+    //  console.log("hi");
     event.preventDefault();
 
     dispatch(login(email, password, role));
@@ -41,51 +35,72 @@ export default function SignUp() {
   }
 
   return (
-    <Container>
-      <Form as={Col} md={{ span: 6, offset: 3 }} className="mt-5">
-        <h1 className="mt-5 mb-5">Login</h1>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Role: </Form.Label>
-          <p></p>
-          <ToggleButtonGroup
-            type="radio"
-            name="role"
-            defaultValue="patient"
-            onChange={(value) => setRole(value)}
-          >
-            <ToggleButton value="patient">Patient</ToggleButton>
-            <ToggleButton value="therapist">Therapist</ToggleButton>
-          </ToggleButtonGroup>{" "}
-          <p></p>
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            type="email"
-            placeholder="Enter email"
-            required
-          />
-        </Form.Group>
+    <div className="relative ml-50 h-1000 flex">
+      <div className="font-sans text-white content-center w-full max-w-md ml-5 py-10 px-16">
+        <form>
+          <h3 className="p-2 mt-1 mb-3 font-sans">Login</h3>
+          <fieldset controlid="formBasicEmail">
+            <div
+              type="radio"
+              name="role"
+              defaultValue="patient"
+              onChange={(event) => setRole(event.target.value)}
+            >
+              <label>Role: </label>
+              <input
+                className="ml-2"
+                type="radio"
+                value="patient"
+                name="role"
+                defaultChecked={true}
+              ></input>
+              <label className="ml-0.5">Patient</label>{" "}
+              <input
+                className="ml-2"
+                type="radio"
+                value="therapist"
+                name="role"
+              ></input>
+              <label className="ml-0.5">Therapist</label>
+            </div>{" "}
+            <p>Email address</p>
+            <input
+              className="text-black"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              type="email"
+              placeholder="Enter email"
+              required
+            />
+          </fieldset>
 
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            type="password"
-            placeholder="Password"
-            required
-          />
-        </Form.Group>
-        <Form.Group className="mt-5">
-          <Button variant="primary" type="submit" onClick={submitForm}>
-            Log in
-          </Button>
-        </Form.Group>
-        <Link to="/signup" style={{ textAlign: "center" }}>
-          Click here to sign up
-        </Link>
-      </Form>
-    </Container>
+          <fieldset controlid="formBasicPassword">
+            <p className="mt-2">Password</p>
+            <input
+              className="text-black"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              type="password"
+              placeholder="Password"
+              required
+            />
+          </fieldset>
+          <fieldset className="mt-3">
+            <button
+              className="bg-green py-2 px-4 rounded border border-green focus:outline-none focus:border-green-dark"
+              variant="primary"
+              type="submit"
+              onClick={submitForm}
+            >
+              Log in
+            </button>
+          </fieldset>
+          <p></p>
+          <Link className="mt-5" to="/signup" style={{ textAlign: "center" }}>
+            Click here to sign up
+          </Link>
+        </form>
+      </div>
+    </div>
   );
 }

@@ -1,9 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Form from "react-bootstrap/Form";
-import Container from "react-bootstrap/Container";
-import Button from "react-bootstrap/Button";
-import ToggleButtonGroup from "react-bootstrap/ToggleButtonGroup";
-import ToggleButton from "react-bootstrap/ToggleButton";
 import { signUp } from "../../store/user/actions";
 import { fetchAllTherapists } from "../../store/therapists/actions";
 import { selectToken, selectUser } from "../../store/user/selectors";
@@ -11,7 +6,6 @@ import { selectTherapists } from "../../store/therapists/selectors";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
-import { Col } from "react-bootstrap";
 
 export default function SignUp() {
   const allTherapists = useSelector(selectTherapists);
@@ -58,79 +52,99 @@ export default function SignUp() {
   }
 
   return (
-    <Container>
-      <Form as={Col} md={{ span: 6, offset: 3 }} className="mt-5">
-        <h1 className="mt-5 mb-5">Signup</h1>
-        <Form.Label>Role: </Form.Label>
-        <p></p>
-        <ToggleButtonGroup
-          type="radio"
-          name="role"
-          defaultValue="patient"
-          onChange={(value) => setRole(value)}
-        >
-          <ToggleButton value="patient">Patient</ToggleButton>
-          <ToggleButton value="therapist">Therapist</ToggleButton>
-        </ToggleButtonGroup>{" "}
-        <p></p>
-        <Form.Group controlId="formBasicName">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            value={name}
-            onChange={(event) => setName(event.target.value)}
-            type="text"
-            placeholder="Enter name"
-            required
-          />
-        </Form.Group>
-        <Form.Group controlId="formBasicEmail">
-          <Form.Label>Email address</Form.Label>
-          <Form.Control
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            type="email"
-            placeholder="Enter email"
-            required
-          />
-          <Form.Text className="text-muted">
-            We'll never share your email with anyone else.
-          </Form.Text>
-        </Form.Group>
-        <Form.Group controlId="formBasicPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            type="password"
-            placeholder="Password"
-            required
-          />
-        </Form.Group>
-        {role === "patient" && (
-          <div>
-            <label>Select therapist:</label>
-            <select
-              onChange={(event) => {
-                setSelectedTherapist(event.target.value);
-              }}
-              value={selectedTherapist}
+    <div className="relative ml-50 h-1000 flex">
+      <div className="font-sans text-white content-center w-full max-w-md ml-5 py-10 px-16">
+        <form>
+          <h3 className="p-2 mt-1 mb-3 font-sans">Signup</h3>
+          <div
+            type="radio"
+            name="role"
+            defaultValue="patient"
+            onChange={(event) => setRole(event.target.value)}
+          >
+            <label>Role: </label>
+            <input
+              className="ml-2"
+              type="radio"
+              value="patient"
+              name="role"
+              defaultChecked={true}
+            ></input>
+            <label className="ml-0.5">Patient</label>{" "}
+            <input
+              className="ml-2"
+              type="radio"
+              value="therapist"
+              name="role"
+            ></input>
+            <label className="ml-0.5">Therapist</label>
+          </div>{" "}
+          <fieldset controlid="formBasicName">
+            <p>Name</p>
+            <input
+              className="text-black"
+              value={name}
+              onChange={(event) => setName(event.target.value)}
+              type="text"
+              placeholder="Enter name"
+              required
+            />
+          </fieldset>
+          <fieldset controlid="formBasicEmail">
+            <p className="mt-2">Email address</p>
+            <input
+              className="text-black"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              type="email"
+              placeholder="Enter email"
+              required
+            />
+          </fieldset>
+          <fieldset controlid="formBasicPassword">
+            <p className="mt-2">Password</p>
+            <input
+              className="text-black"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              type="password"
+              placeholder="Password"
+              required
+            />
+          </fieldset>
+          {role === "patient" && (
+            <div>
+              <label className="mt-4">Select therapist:</label>
+              <select
+                className="ml-1 text-black"
+                onChange={(event) => {
+                  setSelectedTherapist(event.target.value);
+                }}
+                value={selectedTherapist}
+              >
+                {allTherapists.map((therapist) => (
+                  <option key={therapist.id} value={therapist.id}>
+                    {therapist.name}
+                  </option>
+                ))}
+              </select>
+              <p></p>
+            </div>
+          )}
+          <fieldset className="mt-3">
+            <button
+              className="bg-green py-2 px-4 rounded border border-green focus:outline-none focus:border-green-dark"
+              variant="primary"
+              type="submit"
+              onClick={submitForm}
             >
-              {allTherapists.map((therapist) => (
-                <option key={therapist.id} value={therapist.id}>
-                  {therapist.name}
-                </option>
-              ))}
-            </select>
-            <p></p>
-          </div>
-        )}
-        <Form.Group className="mt-5">
-          <Button variant="primary" type="submit" onClick={submitForm}>
-            Sign up
-          </Button>
-        </Form.Group>
-        <Link to="/login">Click here to log in</Link>
-      </Form>
-    </Container>
+              Sign up
+            </button>
+          </fieldset>
+          <p></p>
+          <Link to="/login">Click here to log in</Link>
+        </form>
+      </div>
+    </div>
   );
 }

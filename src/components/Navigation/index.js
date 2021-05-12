@@ -1,32 +1,46 @@
 import React from "react";
-import Navbar from "react-bootstrap/Navbar";
-import Nav from "react-bootstrap/Nav";
 import { NavLink } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { selectToken } from "../../store/user/selectors";
-import NavbarItem from "./NavbarItem";
-import LoggedIn from "./LoggedIn";
-import LoggedOut from "./LoggedOut";
+import { logOut } from "../../store/user/actions";
+import { selectUser } from "../../store/user/selectors";
+import { useHistory } from "react-router-dom";
 
 export default function Navigation() {
+  const dispatch = useDispatch();
   const token = useSelector(selectToken);
-
-  const loginLogoutControls = token ? <LoggedIn /> : <LoggedOut />;
+  const user = useSelector(selectUser);
+  const history = useHistory();
 
   return (
-    <Navbar bg="light" expand="lg">
-      <Navbar.Brand as={NavLink} to="/">
+    <nav className="flex items-center justify-between flex-wrap p-6">
+      <NavLink
+        className="font-sans flex items-center text-white mr-6"
+        to="/"
+        exact
+      >
         paleboard
-      </Navbar.Brand>
-      <Navbar.Toggle aria-controls="basic-navbar-nav" />
-      <Navbar.Collapse id="basic-navbar-nav">
-        <Nav style={{ width: "100%" }} fill>
-          {!token && <NavbarItem path="/" linkText="Home" />}
-          {loginLogoutControls}
-        </Nav>
-      </Navbar.Collapse>
-    </Navbar>
+      </NavLink>
+      {" | "}
+      <span className="font-sans flex items-center text-white mr-6">
+        {token ? user.email : " "}
+      </span>{" "}
+      {" | "}{" "}
+      {token ? (
+        <button
+          className="font-sans flex items-center text-white mr-6"
+          onClick={() => dispatch(logOut())}
+        >
+          log out
+        </button>
+      ) : (
+        <button
+          className="font-sans flex items-center text-white mr-6"
+          onClick={() => history.push("/login")}
+        >
+          log in
+        </button>
+      )}
+    </nav>
   );
 }
-
-// <NavbarItem path="/other" linkText="Other" />

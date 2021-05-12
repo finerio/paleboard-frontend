@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 
-import { Jumbotron } from "react-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
 
 import { selectMyPatients } from "../store/patients/selectors";
@@ -58,52 +57,61 @@ export default function CreateSession() {
   }
 
   return (
-    <div>
-      <Jumbotron>
-        <h1>Create Session</h1>
-      </Jumbotron>
-      <label>Select patient:</label>{" "}
-      <select
-        onChange={(event) => {
-          setSelectedPatient(event.target.value);
-        }}
-        value={selectedPatient}
-      >
-        {myPatients.map((patient) => (
-          <option key={patient.id} value={patient.id}>
-            {patient.name}
-          </option>
-        ))}
-      </select>
-      <p></p>
-      <label>Background color: </label>{" "}
-      <input
-        type="color"
-        value={backgroundColor}
-        onChange={(event) => {
-          setBackgroundColor(event.target.value);
-        }}
-      ></input>
-      <p></p>
-      <label>Therapist brush color: </label>{" "}
-      <input
-        type="color"
-        value={therapistBrushColor}
-        onChange={(event) => {
-          setTherapistBrushColor(event.target.value);
-        }}
-      ></input>
-      <p></p>
-      <label>Patient brush color: </label>{" "}
-      <input
-        type="color"
-        value={patientBrushColor}
-        onChange={(event) => {
-          setPatientBrushColor(event.target.value);
-        }}
-      ></input>
-      <p></p>
-      <button onClick={beginSession}>Begin Session</button>
+    <div className="relative ml-50 h-500 flex relative">
+      <div className="font-sans text-white content-center w-full max-w-md ml-5 py-10 px-16">
+        <h3 className="p-2 mt-1 mb-3 font-sans">Create Session</h3>
+        <label>Select patient:</label>{" "}
+        <select
+          className="text-black ml-2"
+          onChange={(event) => {
+            setSelectedPatient(event.target.value);
+          }}
+          value={selectedPatient}
+        >
+          {myPatients.map((patient) => (
+            <option key={patient.id} value={patient.id}>
+              {patient.name}
+            </option>
+          ))}
+        </select>
+        <p></p>
+        <label>Background color: </label>{" "}
+        <input
+          type="color"
+          value={backgroundColor}
+          onChange={(event) => {
+            setBackgroundColor(event.target.value);
+          }}
+          className="ml-2 border rounded-md outline-none mb-4"
+        ></input>
+        <p></p>
+        <label>Therapist brush color: </label>{" "}
+        <input
+          type="color"
+          value={therapistBrushColor}
+          onChange={(event) => {
+            setTherapistBrushColor(event.target.value);
+          }}
+          className="ml-2 border rounded-md outline-none mb-4"
+        ></input>
+        <p></p>
+        <label>Patient brush color: </label>{" "}
+        <input
+          type="color"
+          value={patientBrushColor}
+          onChange={(event) => {
+            setPatientBrushColor(event.target.value);
+          }}
+          className="ml-2 border rounded-md outline-none mb-4"
+        ></input>
+        <p></p>
+        <button
+          onClick={beginSession}
+          className={`bg-green py-2 px-4 rounded border border-green focus:outline-none focus:border-green-dark`}
+        >
+          Begin Session
+        </button>
+      </div>
     </div>
   );
 }

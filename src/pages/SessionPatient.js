@@ -1,21 +1,15 @@
 import React, { useEffect } from "react";
 
-import { Jumbotron } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import P5Wrapper from "react-p5-wrapper";
-
-// import { fetchSession } from "../store/session/actions";
 
 import { selectSession } from "../store/session/selectors";
 import { selectUser, selectSocket } from "../store/user/selectors";
 
 export default function SessionPatient() {
   const history = useHistory();
-  //   const dispatch = useDispatch();
-
-  //   const [sessionFetched, setSessionFetched] = useState(false);
 
   const session = useSelector(selectSession);
   const sessionId = session.id;
@@ -36,8 +30,13 @@ export default function SessionPatient() {
 
   function sketch(p) {
     p.setup = function () {
-      p.createCanvas(1030, 730);
-      p.background(session.backgroundColor);
+      p.createCanvas(850, 670);
+
+      console.log("session.backgroundColor", session.backgroundColor);
+
+      p.background(
+        session.backgroundColor ? session.backgroundColor : "#f0e6df"
+      );
     };
 
     p.mouseDragged = function () {
@@ -65,9 +64,9 @@ export default function SessionPatient() {
 
   return (
     <div>
-      <Jumbotron>
-        <h1>Patient view</h1>
-      </Jumbotron>
+      <div className="font-sans text-white content-center w-full max-w-md py-3 px-16">
+        <h3>Patient view</h3>
+      </div>
       <P5Wrapper sketch={sketch} />
     </div>
   );

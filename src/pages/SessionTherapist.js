@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { Jumbotron } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
@@ -69,8 +68,13 @@ export default function SessionTherapist() {
 
   function sketch(p) {
     p.setup = function () {
-      p.createCanvas(1030, 730);
-      p.background(session.backgroundColor);
+      p.createCanvas(850, 670);
+
+      console.log("session.backgroundColor", session.backgroundColor);
+
+      p.background(
+        session.backgroundColor ? session.backgroundColor : "#f0e6df"
+      );
     };
 
     p.mouseDragged = function () {
@@ -81,9 +85,6 @@ export default function SessionTherapist() {
       }
 
       p.noStroke();
-
-      // console.log("session", session);
-
       p.fill(session.therapistBrushColor);
       p.ellipse(p.mouseX, p.mouseY, 20, 20);
     };
@@ -100,32 +101,10 @@ export default function SessionTherapist() {
 
   return (
     <div>
-      <Jumbotron>
-        <h1>Therapist view</h1>
-      </Jumbotron>
+      <div className="font-sans text-white content-center w-full max-w-md py-3 px-16">
+        <h3>Therapist view</h3>
+      </div>
       <P5Wrapper sketch={sketch} />
     </div>
   );
 }
-
-// <button onClick={endSessionHandler}>End Session</button>{" "}
-
-/* <label>Brush color: </label>
-<input
-  type="color"
-  value={brushColor}
-  onChange={changeBrushColorHandler}
-></input> */
-
-// function changeBrushColorHandler(event) {
-//    event.preventDefault();
-
-//    setBrushColor(event.target.value);
-//  }
-
-// function endSessionHandler() {
-//    dispatch(endSession());
-//    history.push("/create-session");
-//  }
-
-// const [brushColor, setBrushColor] = useState("#FFFFFF");
