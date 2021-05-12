@@ -26,7 +26,10 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className="App">
+    <div
+      className="min-h-screen w-screen"
+      style={{ background: "linear-gradient(to bottom, #86b1f7, #a7c4f2)" }}
+    >
       <Navigation />
       <MessageBox />
       {isLoading ? <Loading /> : null}

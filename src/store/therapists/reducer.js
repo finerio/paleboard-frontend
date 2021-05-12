@@ -4,7 +4,7 @@ const initialState = {
   allTherapists: [],
 };
 
-export default (state = initialState, action) => {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case FETCH_THERAPISTS_SUCCESS: {
       return {
@@ -15,4 +15,4 @@ export default (state = initialState, action) => {
     default:
       return state;
   }
-};
+}

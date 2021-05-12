@@ -58,8 +58,11 @@ export default function WaitForSession() {
 
   return (
     <div>
-      <h1>Wait For Session</h1>
-      <p>Please wait for your session to begin</p>
+      <h3 className="relative p-24 mt-50 josefin flex items-center text-white mr-6">
+        Please wait for your session to begin
+      </h3>
     </div>
   );
 }
+
+//<h1>Wait For Session</h1>

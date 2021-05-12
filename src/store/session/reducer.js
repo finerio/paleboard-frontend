@@ -10,7 +10,7 @@ const initialState = {
   patientId: null,
 };
 
-export default (state = initialState, action) => {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case CREATE_SESSION_SUCCESS: {
       return { ...state, ...action.payload };
@@ -24,4 +24,4 @@ export default (state = initialState, action) => {
     default:
       return state;
   }
-};
+}

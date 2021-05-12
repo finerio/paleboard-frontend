@@ -5,12 +5,19 @@ import { Link } from "react-router-dom";
 export default function Homepage() {
   return (
     <div>
-      <h1>Home</h1>
-      <span>Please </span>
-      <Link to="/login">log in</Link>
-      <span> or </span>
-      <Link to="/signup">sign up</Link>
-      <span> to begin</span>
+      <h3 className="relative p-24 mt-50 josefin flex items-center text-white mr-6">
+        <span>Please </span>{" "}
+        <Link to="/login" className="mr-6 ml-6">
+          {" "}
+          log in{" "}
+        </Link>{" "}
+        <span> or </span>{" "}
+        <Link to="/signup" className="mr-6 ml-6">
+          {" "}
+          sign up{" "}
+        </Link>{" "}
+        <span> to begin</span>
+      </h3>
     </div>
   );
 }
