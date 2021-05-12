@@ -1,42 +1,90 @@
-# Frontend template
+# paleboard: a mutual drawing board for therapy
 
-This is a simple react/redux/jwt template to start a project quickly
+## The idea
 
-## Table of contents:
+paleboard gives therapists a platform to use alongside video-conferncing apps (such as zoom), so they can draw together with a patient on a shared drawing-board
 
-- **[Setup](#setup-how-to-use-this-template)**
-- **[Create React App docs](#cra-docs)**
+## Link to live website
 
-## SETUP How to use this template
+(to be published)
 
-1. Create a new project based on this template using the `Use this template` button
+## App demo
 
-![HOW_TO_USE](https://user-images.githubusercontent.com/20372832/77003323-70966180-695d-11ea-8abe-b362d57135f3.gif)
+https://photos.app.goo.gl/QCvPcN64nTRdobbS9
 
-2. Clone the app
+## How to use
 
-```
-git clone git@github.com:YOUR_GITHUB_NAME/YOUR_PROJECT_NAME.git
-```
+With two browser windows, simulating both a therapist and a patient:
 
-3. cd into your project
+1. Open two browser windows and arrange them side by side
 
-```
-cd YOUR_PROJECT_NAME
-```
+2. In both windows, use the link above to visit the app
 
-4. install dependencies
+3. In the left window, log in as a therapist (email: t@t.t, password: z)
 
-```
-npm install
-```
+4. In the right window, log in as a patient (email: p@p.p, password: z)
 
-5. Start development server with npm start
+5. As therapist, begin a session with Patient 1
 
-```
-npm start
-```
+6. The mutual drawing-board should be available for drawing
 
-## CRA docs
+You can also follow the above steps on two different computers.
 
-The normal Create React App docs can be found in [CRA_DOCS.md](./CRA_DOCS.md)
+It's also possible to sign-up and create new therapist and patient accounts, but please note that a therapist can only create a session with a patient that's associated with that therapist (during the patient sign-up process).
+
+## Pages overview
+
+- The homepage asks users to log-in or sign-up
+- Corresponding log-in and sign-up pages
+- A "create session" page for the therapist
+- A "wait for session" page for the patient
+- A "session" (drawing board) page for both the therapist and the patient
+
+## Project goals
+
+- Realize a simple yet challenging idea from the ground up, including:
+  - Ideation
+  - Planning (kanban, user stories)
+  - Design (wireframes, data model)
+  - Version control (git & github)
+- Set up a backend including:
+  - Database
+  - Routers
+  - REST API endpoints
+- Integrate previously-unfamiliar technologies:
+  - p5.js: drawing canvas
+  - socket.io (websockets): real-time notifications between clients
+  - tailwindcss: styling
+
+## User stories
+
+- As a user, I want to be able to sign up
+- As a user, I want to be able to log in
+- As a patient, I want to be informed when i'm waiting for my session to begin
+- As a therapist, I want to be able to initiate a session with one of my patients
+- As a patient, I want to see what my therapist draws and also draw on the same board as instructed by my therapist
+
+## Github project page:
+
+https://github.com/users/finerio/projects/1
+
+## Languages and tools
+
+- HTML, CSS, JavaScript
+- React-Redux
+- Node JS
+- p5.js
+- socket.io
+- tailwindcss
+
+## Wireframes
+
+https://photos.app.goo.gl/sp9AVLRTYD23XkLP7
+
+## Database diagram
+
+https://photos.app.goo.gl/ciewxUJURPXThnCW8
+
+## Backend repository
+
+(to be published)
