@@ -58,7 +58,7 @@ export default function WaitForSession() {
 
   return (
     <div>
-      <h3 className="relative p-24 mt-50 josefin flex items-center text-white mr-6">
+      <h3 className="relative p-24 mt-50 font-sans flex items-center text-white mr-6">
         Please wait for your session to begin
       </h3>
     </div>

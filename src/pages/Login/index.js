@@ -4,7 +4,7 @@ import { selectToken, selectUser } from "../../store/user/selectors";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, Link } from "react-router-dom";
 
-export default function SignUp() {
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [role, setRole] = useState("patient");
@@ -35,58 +35,72 @@ export default function SignUp() {
   }
 
   return (
-    <div>
-      <form>
-        <h1 className="mt-5 mb-5">Login</h1>
-        <fieldset controlid="formBasicEmail">
-          <label>Role: </label>
-          <p></p>
-          <div
-            type="radio"
-            name="role"
-            defaultValue="patient"
-            onChange={(event) => setRole(event.target.value)}
-          >
-            <input
+    <div className="relative ml-50 h-1000 flex">
+      <div className="font-sans text-white content-center w-full max-w-md ml-5 py-10 px-16">
+        <form>
+          <h3 className="p-2 mt-1 mb-3 font-sans">Login</h3>
+          <fieldset controlid="formBasicEmail">
+            <div
               type="radio"
-              value="patient"
               name="role"
-              defaultChecked={true}
-            ></input>
-            <label>Patient</label>{" "}
-            <input type="radio" value="therapist" name="role"></input>
-            <label>Therapist</label>
-          </div>{" "}
-          <p></p>
-          <label>Email address</label>
-          <input
-            value={email}
-            onChange={(event) => setEmail(event.target.value)}
-            type="email"
-            placeholder="Enter email"
-            required
-          />
-        </fieldset>
+              defaultValue="patient"
+              onChange={(event) => setRole(event.target.value)}
+            >
+              <label>Role: </label>
+              <input
+                className="ml-2"
+                type="radio"
+                value="patient"
+                name="role"
+                defaultChecked={true}
+              ></input>
+              <label className="ml-0.5">Patient</label>{" "}
+              <input
+                className="ml-2"
+                type="radio"
+                value="therapist"
+                name="role"
+              ></input>
+              <label className="ml-0.5">Therapist</label>
+            </div>{" "}
+            <p>Email address</p>
+            <input
+              className="text-black"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              type="email"
+              placeholder="Enter email"
+              required
+            />
+          </fieldset>
 
-        <fieldset controlid="formBasicPassword">
-          <label>Password</label>
-          <input
-            value={password}
-            onChange={(event) => setPassword(event.target.value)}
-            type="password"
-            placeholder="Password"
-            required
-          />
-        </fieldset>
-        <fieldset className="mt-5">
-          <button variant="primary" type="submit" onClick={submitForm}>
-            Log in
-          </button>
-        </fieldset>
-        <Link to="/signup" style={{ textAlign: "center" }}>
-          Click here to sign up
-        </Link>
-      </form>
+          <fieldset controlid="formBasicPassword">
+            <p className="mt-2">Password</p>
+            <input
+              className="text-black"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              type="password"
+              placeholder="Password"
+              required
+            />
+          </fieldset>
+          <fieldset className="mt-3">
+            <button
+              className="bg-green py-2 px-4 rounded border border-green focus:outline-none focus:border-green-dark"
+              variant="primary"
+              type="submit"
+              onClick={submitForm}
+            >
+              Log in
+            </button>
+          </fieldset>
+          <p></p>
+          <Link className="mt-5" to="/signup" style={{ textAlign: "center" }}>
+            Click here to sign up
+          </Link>
+        </form>
+      </div>
     </div>
   );
 }

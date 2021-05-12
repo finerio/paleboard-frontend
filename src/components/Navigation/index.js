@@ -13,29 +13,29 @@ export default function Navigation() {
   const history = useHistory();
 
   return (
-    <nav className="flex items-center justify-between flex-wrap bg-teal-500 p-6">
+    <nav className="flex items-center justify-between flex-wrap p-6">
       <NavLink
-        className="josefin flex items-center text-white mr-6"
+        className="font-sans flex items-center text-white mr-6"
         to="/"
         exact
       >
         paleboard
       </NavLink>
       {" | "}
-      <span className="josefin flex items-center text-white mr-6">
+      <span className="font-sans flex items-center text-white mr-6">
         {token ? user.email : " "}
       </span>{" "}
       {" | "}{" "}
       {token ? (
         <button
-          className="josefin flex items-center text-white mr-6"
+          className="font-sans flex items-center text-white mr-6"
           onClick={() => dispatch(logOut())}
         >
           log out
         </button>
       ) : (
         <button
-          className="josefin flex items-center text-white mr-6"
+          className="font-sans flex items-center text-white mr-6"
           onClick={() => history.push("/login")}
         >
           log in

@@ -30,8 +30,13 @@ export default function SessionPatient() {
 
   function sketch(p) {
     p.setup = function () {
-      p.createCanvas(1030, 730);
-      p.background(session.backgroundColor);
+      p.createCanvas(850, 670);
+
+      console.log("session.backgroundColor", session.backgroundColor);
+
+      p.background(
+        session.backgroundColor ? session.backgroundColor : "#f0e6df"
+      );
     };
 
     p.mouseDragged = function () {
@@ -59,7 +64,9 @@ export default function SessionPatient() {
 
   return (
     <div>
-      <h1>Patient view</h1>
+      <div className="font-sans text-white content-center w-full max-w-md py-3 px-16">
+        <h3>Patient view</h3>
+      </div>
       <P5Wrapper sketch={sketch} />
     </div>
   );

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export default function Homepage() {
   return (
     <div>
-      <h3 className="relative p-24 mt-50 josefin flex items-center text-white mr-6">
+      <h3 className="relative p-5 mt-50 font-sans flex items-center text-white mr-6">
         <span>Please </span>{" "}
         <Link to="/login" className="mr-6 ml-6">
           {" "}
