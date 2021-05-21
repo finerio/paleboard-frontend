@@ -2,7 +2,7 @@
 
 ## The idea
 
-paleboard gives therapists a platform to use alongside video-conferncing apps (such as zoom), so they can draw together with a patient on a shared drawing-board
+paleboard gives therapists a platform to use alongside video-conferencing apps (such as zoom), so they can draw together with a patient on a shared drawing-board
 
 ## Link to live website
 
