@@ -6,7 +6,7 @@ paleboard gives therapists a platform to use alongside video-conferncing apps (s
 
 ## Link to live website
 
-(to be published)
+https://paleboard.netlify.app/
 
 ## App demo
 
