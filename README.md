@@ -87,4 +87,4 @@ https://photos.app.goo.gl/ciewxUJURPXThnCW8
 
 ## Backend repository
 
-(to be published)
+https://github.com/finerio/paleboard-backend
