@@ -73,6 +73,9 @@ export const signUp = (name, email, password, role, therapistId) => {
 
 export const login = (email, password, role) => {
   return async (dispatch, getState) => {
+    
+    console.log("apiUrl", apiUrl);
+    
     dispatch(appLoading());
     try {
       const response = await axios.post(`${apiUrl}/login-${role}`, {
