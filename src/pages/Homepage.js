@@ -3,6 +3,9 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 export default function Homepage() {
+  
+  console.log("hi");
+  
   return (
     <div>
       <h3 className="relative p-5 mt-50 font-sans flex items-center text-white mr-6">
