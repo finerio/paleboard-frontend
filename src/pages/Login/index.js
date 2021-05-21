@@ -12,6 +12,8 @@ export default function Login() {
   const token = useSelector(selectToken);
   const loggedInUser = useSelector(selectUser);
   const history = useHistory();
+  
+  console.log("hi");
 
   useEffect(() => {
     if (token !== null) {
