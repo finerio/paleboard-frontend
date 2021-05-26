@@ -10,7 +10,7 @@ https://paleboard.netlify.app/
 
 ## App demo
 
-https://photos.app.goo.gl/QCvPcN64nTRdobbS9
+https://youtu.be/u3B0de8Jbew
 
 ## How to use
 
